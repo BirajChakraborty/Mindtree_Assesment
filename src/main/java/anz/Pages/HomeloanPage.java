@@ -26,7 +26,7 @@ public class HomeloanPage {
 	private By  youcouldborrow=By.xpath("//button[@id='btnBorrowCalculater']");
 	private By  valueCheck=By.xpath("//span[@id='borrowResultTextAmount']");
 	private By  errorcheckmsg=By.xpath("//div[@class=\"borrow__error__text\"]");
-	
+	private By  StartOverButtn=By.xpath("//span[@class='icon icon_restart']");
 	
 	//2.constructor of the page class
 	
@@ -51,28 +51,28 @@ public class HomeloanPage {
 		
 		
 	}
-	public void userInput2() {
+	public void userInput2(String Ann_Income,String AnnOtherIncome) {
 		driver.findElement(AnnualIncome).clear();
-		driver.findElement(AnnualIncome).sendKeys("$80000");
+		driver.findElement(AnnualIncome).sendKeys(Ann_Income);
 		driver.findElement(AnnualIncomeoptiona).clear();
-		driver.findElement(AnnualIncomeoptiona).sendKeys("$10000");
+		driver.findElement(AnnualIncomeoptiona).sendKeys(AnnOtherIncome);
 		
 	}
 	
-	public void userInput3() {
+	public void userInput3(String MonthlyLivExp,String HomeMonthlyRepay,String Otherloan) {
 		driver.findElement(Monthlylivingexpences).clear();
-		driver.findElement(Monthlylivingexpences).sendKeys("$500");
+		driver.findElement(Monthlylivingexpences).sendKeys(MonthlyLivExp);
 		driver.findElement(HomeloanMonthlyrepayment).clear();
-		driver.findElement(HomeloanMonthlyrepayment).sendKeys("0");
+		driver.findElement(HomeloanMonthlyrepayment).sendKeys(HomeMonthlyRepay);
 		driver.findElement(OtherLoan).clear();
-		driver.findElement(OtherLoan).sendKeys("$100");
+		driver.findElement(OtherLoan).sendKeys(Otherloan);
 	}
 	
-	public void userInput4() {
+	public void userInput4(String OtherMontlyIncome,String CreditLimit) {
 		driver.findElement(Othermonthlycommitments).clear();
-		driver.findElement(Othermonthlycommitments).sendKeys("0");
+		driver.findElement(Othermonthlycommitments).sendKeys(OtherMontlyIncome);
 		driver.findElement(credit).clear();
-		driver.findElement(credit).sendKeys("$10000");
+		driver.findElement(credit).sendKeys(CreditLimit);
 		
 	}
 	
@@ -87,9 +87,9 @@ public class HomeloanPage {
 		return value;
 	}
 	
-	public void expensecheck() {
+	public void expensecheck(String MonthlyExpenseCheck) {
 		
-		driver.findElement(Monthlylivingexpences).sendKeys("1");
+		driver.findElement(Monthlylivingexpences).sendKeys(MonthlyExpenseCheck);
 	}
 	
 public String errorCheck() {
@@ -98,6 +98,18 @@ public String errorCheck() {
 		 String error=element.getText();
 		 return error;
 	}
+
+public void refresh() {
+	
+	driver.findElement(StartOverButtn).click();
+}
+
+public String clearDataCheck() {
+	
+	WebElement element1=driver.findElement(AnnualIncome);
+	return element1.getText();
+	
+}
 	
 	
 	

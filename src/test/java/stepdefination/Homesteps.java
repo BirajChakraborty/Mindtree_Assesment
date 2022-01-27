@@ -2,13 +2,28 @@ package stepdefination;
 
 
 
+import org.testng.Assert;
+
 import anz.Pages.HomeloanPage;
 import anz.QA.factory.DriverFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+
+
+
 public class Homesteps {
+	
+	String Your_annual_income_before_tax;
+	String Your_annual_other_income_optional_Tooltip;
+	String Monthly_living_expenses_Tooltip;
+	String Current_home_loan_monthly_repayments_Tooltip;
+	String Othe_loan_monthly_repayments_Tooltip;
+	String Other_monthly_commitments;
+	String Total_credit_card_limits;
+	String Monthly_living_expenses;
+	
 	
      private HomeloanPage homeloan = new HomeloanPage(DriverFactory.getDriver());
 	
@@ -28,19 +43,27 @@ public class Homesteps {
 	}
 
 	@When("Enter the annual income as {string} and annual othe income as {string}")
-	public void enter_the_annual_income_as_and_annual_othe_income_as(String string, String string2) {
-	    
-		homeloan.userInput2();
+	public void enter_the_annual_income_as_and_annual_othe_income_as(String Your_annual_income_before_tax, String Your_annual_other_income_optional_Tooltip) {
+	    this.Your_annual_income_before_tax=Your_annual_income_before_tax;
+	    this.Your_annual_other_income_optional_Tooltip=Your_annual_other_income_optional_Tooltip;
+		homeloan.userInput2(Your_annual_income_before_tax,Your_annual_other_income_optional_Tooltip);
 	}
 
 	@When("update Monthly living expenses as {string} and home loan monthly repayments as {string} and other loan repayments as {string}")
-	public void update_monthly_living_expenses_as_and_home_loan_monthly_repayments_as_and_other_loan_repayments_as(String string, String string2, String string3) {
-		homeloan.userInput3();
+	public void update_monthly_living_expenses_as_and_home_loan_monthly_repayments_as_and_other_loan_repayments_as(String Monthly_living_expenses_Tooltip, String Current_home_loan_monthly_repayments_Tooltip, String Othe_loan_monthly_repayments_Tooltip) {
+		
+		this.Monthly_living_expenses_Tooltip=Monthly_living_expenses_Tooltip;
+		this.Current_home_loan_monthly_repayments_Tooltip=Current_home_loan_monthly_repayments_Tooltip;
+		this.Othe_loan_monthly_repayments_Tooltip=Othe_loan_monthly_repayments_Tooltip;
+		
+		homeloan.userInput3(Monthly_living_expenses_Tooltip,Current_home_loan_monthly_repayments_Tooltip,Othe_loan_monthly_repayments_Tooltip);
+		
+		
 	}
 
 	@When("select other commitments as {string} and total credit card limits {string}")
-	public void select_other_commitments_as_and_total_credit_card_limits(String string, String string2) {
-	   homeloan.userInput4();
+	public void select_other_commitments_as_and_total_credit_card_limits(String Other_monthly_commitments, String Total_credit_card_limits) {
+	   homeloan.userInput4(Other_monthly_commitments,Total_credit_card_limits);
 	}
 
 	@When("click on the work out how much I could borrow")
@@ -56,42 +79,65 @@ public class Homesteps {
 		
 		String ActualValue=homeloan.valueCheck();
 		
-		if(expectedValue.equalsIgnoreCase(ActualValue)) {
-			System.out.println("Value is matched");
-			
-		}
-		else {
-			
-			System.out.println("Value is not matching");
-		}
+//		Assert.assertEquals(ActualValue,expectedValue," ");
+		
+		Assert.assertTrue(ActualValue.contains(expectedValue),  "");
+		
+//		if(expectedValue.equalsIgnoreCase(ActualValue)) {
+//			System.out.println("Value is matched");
+//			
+//		}
+//		else {
+//			
+//			System.out.println("Value is not matching");
+//		}
 	   
 	}
 	
-	@When("update Monthly living expenses as {string}")
-	public void update_monthly_living_expenses_as(String string) {
-		
-		homeloan.expensecheck();
-	    
+	@When("update Monthly_living_expenses as {string}")
+	public void update_monthly_living_expenses_as(String Monthly_living_expenses) {
+		this.Monthly_living_expenses=Monthly_living_expenses;
+		homeloan.expensecheck(Monthly_living_expenses);
 	}
-	
+		
 	@Then("error message should be matched")
 	public void error_message_should_be_matched() {
 
 		String extepectedError= "Based on the details you've entered, we're unable to give you an estimate of your borrowing power with this calculator. For questions, call us on 1800 100 641";
 		String actualError=homeloan.errorCheck();
-		if(extepectedError.equals(actualError)) {
-			System.out.println("Error message is matching " +
-					"\n Error message is :\n " +actualError);
-			
-		}
-		else {
-			
-			System.out.println("Error message is not matching  " +
-					"\n Error message is :\n " +actualError);
-		}
+		
+//       Assert.assertEquals(actualError, extepectedError, "Test case is passed");
+       
+       
+		Assert.assertTrue(actualError.contains(extepectedError), " ");
+		
+//		if(extepectedError.equals(actualError)) {
+//			System.out.println("Error message is matching " +
+//					"\n Error message is :\n " +actualError);
+//			
+//		}
+//		else {
+//			
+//			System.out.println("Error message is not matching  " +
+//					"\n Error message is :\n " +actualError);
+//		}
+//		
+		
 	}
 
+	@When("click on the StartOver button")
+	public void click_on_the_start_over_button() {
+		homeloan.refresh();
+	}
 
+	@Then("All the fields should be clear")
+	public void all_the_fields_should_be_clear() {
+	    
+		String Annincome=homeloan.clearDataCheck();
+		System.out.println("After Refresgh : " +   Annincome);
+//		Assert.assertEquals(" ", Annincome);
+		
+	}
 
 
 }
